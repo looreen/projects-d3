@@ -1,4 +1,5 @@
 import { scaleBand, scaleLinear } from "d3";
+import * as d3 from "d3";
 
 export default function App() {
   const data = [
@@ -32,6 +33,13 @@ export default function App() {
     ])
     .padding(0.5);
 
+  const gridValues = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+
+  const lineGenerator = d3
+    .line()
+    .x((d) => d.x)
+    .y((d) => d.y);
+
   return (
     <>
       <div style={{ width: width, padding: "0px 20px" }}>
@@ -60,8 +68,36 @@ export default function App() {
           </span>
         </div>
         <div>
-          <svg width={width} height={height}>
-            <rect width={width} height={height} fill={"lightgrey"} />
+          <svg width={width} height={height} style={{ overflow: "visible" }}>
+            {gridValues.map((val) => {
+              const pathData = lineGenerator([
+                { x: xScale(val), y: 0 },
+                { x: xScale(val), y: height },
+              ]);
+              return (
+                <g key={val}>
+                  <path
+                    d={pathData}
+                    fill="none"
+                    stroke="#808080"
+                    opacity={0.2}
+                    strokeWidth={1}
+                  />
+                  <text
+                    x={xScale(val)}
+                    y={-10}
+                    textAnchor="middle"
+                    alignmentBaseline="central"
+                    fontSize={12}
+                    fill="##808080"
+                    opacity={1}
+                  >
+                    {val}
+                  </text>
+                </g>
+              );
+            })}
+
             {data.map((d, i) => (
               <g>
                 <rect
