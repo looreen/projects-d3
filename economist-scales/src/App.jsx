@@ -33,7 +33,7 @@ export default function App() {
     ])
     .padding(0.5);
 
-  const gridValues = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+  const gridValues = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
   const lineGenerator = d3
     .line()
@@ -43,7 +43,7 @@ export default function App() {
   return (
     <>
       <div style={{ width: width, padding: "0px 20px" }}>
-        <div style={{ height: "100px", width: width }}>
+        <div style={{ width: width, marginBottom: "12px" }}>
           <div
             style={{
               marginTop: "14px",
@@ -56,13 +56,23 @@ export default function App() {
             style={{ width: "36px", height: "9px", backgroundColor: "#e5011c" }}
           ></div>
           <span
-            style={{ display: "block", fontSize: "20px", textAlign: "left" }}
+            style={{
+              display: "block",
+              fontSize: "20px",
+              textAlign: "left",
+              color: "black",
+            }}
           >
-            <b>Escape Artists</b>
+            <b style={{ marginBottom: "15px" }}>Escape Artists</b>
           </span>
-          <br></br>
           <span
-            style={{ display: "block", fontSize: "16px", textAlign: "left" }}
+            style={{
+              display: "block",
+              fontSize: "16px",
+              textAlign: "left",
+              color: "black",
+              marginBottom: "15px",
+            }}
           >
             Number of laboratory-acquired infections, 1970-2021
           </span>
@@ -98,6 +108,15 @@ export default function App() {
               );
             })}
 
+            <path
+              d={lineGenerator([
+                { x: 0, y: 0 },
+                { x: 0, y: height },
+              ])}
+              fill="none"
+              stroke="black"
+            />
+
             {data.map((d, i) => (
               <g>
                 <rect
@@ -112,8 +131,8 @@ export default function App() {
                 <text
                   fill={d.count > 7 ? "white" : "#076fa2"}
                   fill-opacity={0.9}
-                  y={yScale(d.name)}
-                  x={d.count > 7 ? xScale(7) : xScale(d.count + 4)}
+                  y={yScale(d.name) + yScale.bandwidth() / 2}
+                  x={d.count > 7 ? 7 : xScale(d.count) + 4}
                   textAnchor="start"
                   alignmentBaseline="central"
                   fontSize={14}
@@ -124,6 +143,33 @@ export default function App() {
             ))}
             <rect></rect>
           </svg>
+        </div>
+        <div
+          style={{
+            fontSize: "12px",
+            fill: "grey",
+            textAlign: "left",
+          }}
+        >
+          <span
+            style={{
+              marginTop: "5px",
+              marginBottom: "5px",
+              display: "block",
+            }}
+          >
+            Sources: Laboratory-Acquired Infection Database; American Biological
+            Safety Association
+          </span>
+          <span
+            style={{
+              marginTop: "5px",
+              marginBottom: "5px",
+              display: "block",
+            }}
+          >
+            The Economist
+          </span>
         </div>
       </div>
     </>
